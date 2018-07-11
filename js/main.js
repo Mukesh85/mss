@@ -329,6 +329,7 @@ angular.module('mss_app', ["ngRoute"]).config(['$locationProvider', '$routeProvi
                  $scope.searchData = datejson[$scope.toCheckDate];
              }
          }
+
          // else {
          //     var toCheckPresenter = $("input[name='presenter']").val();
          //     toCheckPresenter = toCheckPresenter.toLowerCase();
@@ -385,8 +386,10 @@ angular.module('mss_app', ["ngRoute"]).config(['$locationProvider', '$routeProvi
          }
 
          console.log(datejson);
+         console.log($scope.searchData);
          console.log(presenterjson);
          var tempindex = 0;
+         if($scope.type=='presenter'){
          $scope.searchData.forEach(function (obj) {
              if ((new Date(obj.date)).toLocaleDateString() == toDeleteDate) {
                  $scope.searchData.splice(tempindex, 1);
@@ -394,6 +397,13 @@ angular.module('mss_app', ["ngRoute"]).config(['$locationProvider', '$routeProvi
              tempindex++;
              console.log(obj.date, toDeleteDate);
          });
+     }
+     $scope.scopepresenterjson=[];
+     $scope.presenterList=[];
+    Object.keys(presenterjson).forEach(function(k){
+        $scope.scopepresenterjson.push({"presenter" : k , "data" : presenterjson[k]});
+        $scope.presenterList.push(k);
+    });
          localStorage.setItem('datejson', JSON.stringify(datejson));
          localStorage.setItem('presenterjson', JSON.stringify(presenterjson));
      }
@@ -449,6 +459,7 @@ angular.module('mss_app', ["ngRoute"]).config(['$locationProvider', '$routeProvi
          firstDate = new Date(firstDate.getTime() + (7 * 24 * 60 * 60 * 1000));
          x++;
      }*/
+     console.log($scope.sortedbyValueJSONArray);
      var toDeletePre;
      var toDeleteDate;
      $scope.changeFormat = function (key) {
@@ -487,7 +498,7 @@ angular.module('mss_app', ["ngRoute"]).config(['$locationProvider', '$routeProvi
                  index++;
              });
          }
-
+        $scope.sortedbyValueJSONArray = sortByValue($scope.tableData);
          //         console.log($scope.tableData);
          //         console.log(presenterjson);
          localStorage.setItem('datejson', JSON.stringify($scope.tableData));
